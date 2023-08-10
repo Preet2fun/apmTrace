@@ -51,7 +51,7 @@ const init = function (serviceName: string, metricPort: number) {
             }),
             new HttpInstrumentation(),
             new IORedisInstrumentation(),
-             new WsInstrumentation()
+            //new WsInstrumentation()
         ]
     });
     const tracer = provider.getTracer(serviceName);
