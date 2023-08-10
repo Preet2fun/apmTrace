@@ -11,7 +11,7 @@ services:
   jaeger:
     image: jaegertracing/all-in-one
     environment:
-      - SPAN_STORAGE_TYPE=elasticsearch
+      - SPAN_STORAGE_TYPE=elasticsearch    # jaeger will store traces in elasticsearch rather then in memory
       - ES_SERVER_URLS=http://elastic:9200
     ports: 
       - 5775:5775
@@ -36,7 +36,8 @@ services:
     ports:
       - 6379:6379
   collector-gateway:
-    image: otel/opentelemetry-collector-contrib
+    image: otel/opentelemetry-collector-contrib # if need to do tail sampling then we need to use contrib as it is not available in core
+     #image: otel/opentelemetry-collector       
     volumes: 
       - ./config/collector-gateway.yml:/etc/otel-collector-config.yaml
     command: ["--config=/etc/otel-collector-config.yaml"]

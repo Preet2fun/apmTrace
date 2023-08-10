@@ -15,21 +15,21 @@ processors:
         value: "gateway"
         action: insert
   tail_sampling:
-    decision_wait: 2s
+    decision_wait: 2s  # collector will accumelate all traces till 2 sec and then make decesion as per below policy. 
     num_traces: 100
     expected_new_traces_per_sec: 1
     policies:
       [
-          # {
-          #   name: test-policy-1,
-          #   type: status_code,
-          #   status_code: {status_codes: [ERROR]}
-          # },
-          # {
-          #   name: test-policy-2,
-          #   type: latency,
-          #   latency: {threshold_ms: 1500}
-          # },
+           {
+             name: test-policy-1,
+             type: status_code,
+             status_code: {status_codes: [ERROR]} #only traces which has error get filtered
+           },
+           {
+             name: test-policy-2,
+             type: latency,
+             latency: {threshold_ms: 1500}  #only traces which has response time more then 1.5 sec get filtered
+           },
       ]
 exporters:
   prometheus:

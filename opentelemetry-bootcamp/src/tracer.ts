@@ -28,7 +28,7 @@ const init = function (serviceName: string, metricPort: number) {
     const meter = new MeterProvider({ exporter: metricExporter, interval: 100000 }).getMeter(serviceName);
 
     // Define traces
-    const traceExporter = new JaegerExporter({ endpoint: 'http://localhost:14268/api/traces'});
+    //const traceExporter = new JaegerExporter({ endpoint: 'http://localhost:14268/api/traces'});
     const provider = new NodeTracerProvider({
         resource: new Resource({
             [SemanticResourceAttributes.SERVICE_NAME]: serviceName
@@ -37,9 +37,9 @@ const init = function (serviceName: string, metricPort: number) {
             root: new TraceIdRatioBasedSampler(1)
         })
     });
-    // const traceExporter = new CollectorTraceExporter({
-    //     url: 'http://localhost:4318/v1/trace'
-    // })
+     const traceExporter = new CollectorTraceExporter({
+         url: 'http://localhost:4318/v1/trace'
+     })
     provider.addSpanProcessor(new SimpleSpanProcessor(traceExporter));
     provider.register();
     registerInstrumentations({
